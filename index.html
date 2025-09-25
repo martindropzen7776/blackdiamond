@@ -5,25 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BLACKDIAMOND</title>
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '4036606799898981');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '4036606799898981'); // Pixel ID BlackDiamond
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
+  /></noscript>
 
-  <!-- Tipografías -->
+  <!-- Google tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7759VBMF1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W7759VBMF1');
+  </script>
+
+  <!-- Tipografía -->
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600;700;800&display=swap" rel="stylesheet"/>
 
   <meta name="theme-color" content="#0a0a0a">
@@ -39,9 +47,9 @@ src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
       --silver-1:#d9d9d9;
       --silver-2:#9e9e9e;
       --silver-3:#6f6f6f;
-      --gold:#ffd700; /* para detalles mínimos */
+      --gold:#ffd700;
       --txt:#ffffff;
-      --accent:#18c55d; /* WhatsApp */
+      --accent:#18c55d;
     }
 
     *{box-sizing:border-box}
@@ -123,7 +131,6 @@ src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
       100%{ box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 0 0 0 rgba(217,217,217,0) }
     }
 
-    /* Pequeños */
     @media (max-width:380px){
       .badges{ grid-template-columns:1fr 1fr }
     }
@@ -132,9 +139,7 @@ src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
 
 <body>
   <main class="container">
-    <!-- LOGO BLACKDIAMOND -->
     <img src="avatar.jpeg" alt="BLACKDIAMOND" class="logo" loading="eager"/>
-
     <h1>CREÁ TU CUENTA HOY</h1>
     <p class="tagline">Bonificamos tu primera carga • Atención <strong>24/7</strong> por WhatsApp</p>
 
@@ -156,15 +161,38 @@ src="https://www.facebook.com/tr?id=4036606799898981&ev=PageView&noscript=1"
   </main>
 
   <script>
-    function openRandomLink() {
-      const links = [
-        // Agregá más líneas si querés repartir el tráfico:
-'https://wa.me/5491137592049?text=Hola%20quiero%20mi%20usuario',
-'https://wa.me/5491138034387?text=Hola%20quiero%20mi%20usuario'
-
+    function pickNumber() {
+      const numbers = [
+        '5491137592049',
+        '5491138034387'
       ];
-      const randomLink = links[Math.floor(Math.random() * links.length)];
-      window.location.href = randomLink;
+      return numbers[Math.floor(Math.random() * numbers.length)];
+    }
+
+    function openRandomLink() {
+      const number = pickNumber();
+      const ref = "BD_" + Math.random().toString(36).substring(2,8).toUpperCase();
+
+      const msg = `Hola, quiero registrarme.\nMi código promocional es: ${ref}`;
+      const url = `https://wa.me/${number}?text=${encodeURIComponent(msg)}&ref=${encodeURIComponent(ref)}`;
+
+      // 🎯 Tracking en Meta Pixel
+      if (typeof fbq === "function") {
+        fbq("track", "Lead", { destino:number, ref });
+      }
+
+      // 🎯 Tracking en GA4
+      if (typeof gtag === "function") {
+        gtag("event", "generate_lead", {
+          event_category: "engagement",
+          event_label: "WhatsApp",
+          value: 1,
+          ref: ref,
+          number: number
+        });
+      }
+
+      window.location.href = url;
     }
   </script>
 </body>
